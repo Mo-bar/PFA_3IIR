@@ -39,6 +39,13 @@ dependencies:
   animated_text_kit: ^4.2.2
   sqflite: ^2.1.0+1
   dropdown_search: ^5.0.3
+  firebase_auth: ^3.11.2
+  cloud_firestore: ^3.5.1
+  cloud_functions: ^3.3.9
+  firebase_messaging: ^13.1.0
+  firebase_storage: ^10.3.11
+  firebase_core: ^1.24.0
+  firebase_database: ^9.1.7
 
 dev_dependencies:
   flutter_test:

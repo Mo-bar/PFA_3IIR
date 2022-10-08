@@ -1,6 +1,7 @@
 import 'package:bsites/data/sqlite_.dart';
 import 'package:bsites/screen/auth/signup_.dart';
 import 'package:bsites/screen/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 class Login extends StatefulWidget  {
@@ -15,9 +16,24 @@ class _LoginState extends State<Login>  {
   SqlDb sql = SqlDb();
   @override
   void initState() {
+    auth();
     super.initState();
   }
-
+  auth() async{
+    try {
+  final userCredential =
+      await FirebaseAuth.instance.signInAnonymously();
+  print("Signed in with temporary account.");
+} on FirebaseAuthException catch (e) {
+  switch (e.code) {
+    case "operation-not-allowed":
+      print("Anonymous auth hasn't been enabled for this project.");
+      break;
+    default:
+      print("Unknown error.");
+  }
+}
+  }
   bool hidePasswd = true;
   String? errorText;
   @override
