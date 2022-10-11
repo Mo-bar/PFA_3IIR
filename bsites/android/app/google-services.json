@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "879646947146",
+    "firebase_url": "https://bsite-80ada-default-rtdb.firebaseio.com",
     "project_id": "bsite-80ada",
     "storage_bucket": "bsite-80ada.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "879646947146-62mk8kmu9kofemeu1899vm6ahfrlrta7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bsites",
+            "certificate_hash": "2c62c71243e6b66d1f4a6e610ec7c9f8ed634796"
+          }
+        },
         {
           "client_id": "879646947146-1srmhvds97kcmjo3kj40cu1dsf41s096.apps.googleusercontent.com",
           "client_type": 3
