@@ -1,6 +1,5 @@
-import 'package:bsites/data/sqlite_.dart';
-import 'package:bsites/screen/home.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 // ignore: must_be_immutable
 class Favorite extends StatefulWidget {
 String email;
@@ -8,20 +7,12 @@ String email;
   @override
   State<Favorite> createState() => _FavoriteState();
 }
-// [{catId: 1, catName: logos}, {catId: 2, catName: Web site}, {catId: 3, catName: Mobile app}, {catId: 4, catName: T-Shirt}]
 class _FavoriteState extends State<Favorite> {
   TextEditingController email = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldFav = GlobalKey<ScaffoldState>();
-  SqlDb sql = SqlDb();
   int isPressed = 0;
-  loadData()async{
-    List<Map> helper = [];
-    helper.addAll(await sql.getdata('SELECT G.*,C.flag, U.userName FROM Gig G, User U,Country C WHERE G.favorite = 1 AND  G.email = U.email AND U.countryName = C.name;'));
-    return helper;
-  }
 @override
   void initState() {
-    loadData();
     email.text = widget.email;
     super.initState();
   }
@@ -33,15 +24,11 @@ class _FavoriteState extends State<Favorite> {
         title: const Text('Favorite items'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_outlined),
-          onPressed: (() {
-            Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: ((context) => Home(
-              email: email.text,
-            ))));
+          onPressed: (() { Get.back();
           }
         ),
       ),),
       body: FutureBuilder(
-        future: loadData(),
         builder: (context,AsyncSnapshot snapshot) {
           if(snapshot.connectionState == ConnectionState.done){
             if(snapshot.hasError){
@@ -100,12 +87,7 @@ class _FavoriteState extends State<Favorite> {
                                 backgroundColor: MaterialStateProperty.all( const Color.fromARGB(255,250,250,250),),
                               ),
                               onPressed: ()async{
-                                int del = -1;
-                                del = await sql.updateData_('UPDATE Gig SET favorite = 0 WHERE gigId = ${snapshot.data[index]["gigId"]}');
-                                  if(del > 0){
-                                  setState(() {
-                                  });
-                                  }
+
                               },
                               child: Icon(Icons.remove_shopping_cart_outlined,color: Theme.of(context).colorScheme.primary),
                             )

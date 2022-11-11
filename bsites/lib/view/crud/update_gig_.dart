@@ -1,48 +1,33 @@
-import 'package:bsites/data/sqlite_.dart';
-import 'package:bsites/screen/home.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 class EditGig extends StatefulWidget {
-  final int  gigId ;
-  final String gigName;
+  final String title;
   final double price;
-  final String desc;
   final int duration ; 
   final String email;
-  final int catId;
-  const EditGig({Key? key,required this.catId,required this.email,required this.duration,required this.gigId ,required this.gigName,required this.price,required this.desc}) : super(key: key);
+  const EditGig(this.title,this.price,this.duration,this.email,[Key? key]) : super(key: key);
   @override
   State<EditGig> createState() => _EditGigState();
 }
 class _EditGigState extends State<EditGig> {
   GlobalKey<FormState> accountKey = GlobalKey();
   TextEditingController email = TextEditingController();
-  TextEditingController gigName = TextEditingController();
+  TextEditingController title = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController desc = TextEditingController();  
   TextEditingController duration = TextEditingController();  
   int gigId =  -1;
   int catId = -1;
   double verPadding = 16;
-  SqlDb sql = SqlDb();
   List<Map> categories = [];
   List<String> category = [];
   @override
   void initState() {
-    loadData();
     email.text = widget.email;
-    gigId = widget.gigId;
-    gigName.text = widget.gigName;
+    title.text = widget.title;
     price.text = '${widget.price}';
-    desc.text = widget.desc;
     duration.text = '${widget.duration}' ;
-    catId = widget.catId;
     super.initState();
-  }
-  loadData() async {
-    categories = await sql.getTableByName('Category');
-    category.addAll(categories.map((item) => item['catName']).toList(growable: false).cast<String>());
-    setState(() {});
   }
   @override
   Widget build(BuildContext context) {
@@ -72,25 +57,6 @@ class _EditGigState extends State<EditGig> {
             actions:  <Widget>[
               IconButton(onPressed: ()async{
                 if(accountKey.currentState!.validate()){
-                    int tester = await sql.updateData_('''
-                      UPDATE Gig
-                      SET gigName = "${gigName.text}",desc = "${desc.text}",price = ${price.text},desc = "${desc.text}" ,duration = ${duration.text} ,catId = $catId WHERE gigId = $gigId;
-                    ''');
-                  if(tester > 0){
-                    if(mounted) 
-                    {
-                      Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (context) => Home(
-                      email: email.text,
-                      ),));
-                    }
-                  }else{
-                    if(mounted) 
-                    {
-                      Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (context) => Home(
-                      email: email.text,
-                      ),));
-                    }
-                  }
                   }
                 }, icon: Icon(Icons.save_outlined, color: Theme.of(context).colorScheme.primary),
               ),
@@ -115,7 +81,7 @@ class _EditGigState extends State<EditGig> {
                 SizedBox(height: rowMargin,),
                   TextFormField(
                     maxLength: 23,
-                    controller: gigName,
+                    controller: title,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
                     validator: (value) => value == null || value.isEmpty ? 'Required field' : null,
